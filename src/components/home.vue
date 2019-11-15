@@ -21,9 +21,23 @@
    </div>
 </template>
 
+<script>
+  export default {
+    data() {
+      return {
+        activeIndex: '1',
+        activeIndex2: '1'
+      };
+    },
+    methods: {
+      handleSelect(key, keyPath) {
+        console.log(key, keyPath);
+      }
+    }
+  }
+</script>
 
 <style>
-   
   .layout{
     height: 100%;
     width: 100%;
@@ -37,7 +51,6 @@
     padding: 0px;
   }
 
-  
   html,body,#app,.el-container{
     padding: 0px;
     margin: 0px;
@@ -59,6 +72,5 @@
   body > .el-container {
     margin-bottom: 40px;
   }
-  
 </style>
 

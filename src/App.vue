@@ -11,7 +11,7 @@ export default {
 </script>
 
 <style>
-#app {
+html, body, #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -19,5 +19,8 @@ export default {
   color: #2c3e50;
   width: 100%;
   height: 100%;
+  margin-left: 0px;
+  margin-top: 0px;
+  overflow: hidden;
 }
 </style>

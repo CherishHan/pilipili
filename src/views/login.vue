@@ -1,17 +1,19 @@
 <template>
    <div class="login-pili">
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="50px" class="demo-ruleForm">
-		  <el-form-item label="账号" prop="name" size="mini">
-		    <el-input v-model="ruleForm.name"></el-input>
-		  </el-form-item>
-		  <el-form-item label="密码" prop="passwd">
-		    <el-input type="password" v-model="ruleForm.passwd"></el-input>
-		  </el-form-item>
-		  <el-form-item> 
-		    <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
-		    <el-button @click="resetForm('ruleForm')">重置</el-button>
-		  </el-form-item>
-      </el-form>
+     <div class="login-log">
+        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="50px" class="demo-ruleForm">
+        <el-form-item label="账号" prop="name" size="mini">
+          <el-input v-model="ruleForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="passwd">
+          <el-input type="password" v-model="ruleForm.passwd"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
+          <el-button @click="resetForm('ruleForm')">重置</el-button>
+        </el-form-item>
+        </el-form>
+     </div>
    </div>
 </template>
 
@@ -54,10 +56,16 @@
 
 <style scoped>
 .login-pili {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-size: 100%;
+  width: 100%;
+  height: 100%;
+  background-image: url(../assets/img/timg.jpg);
+  background-size:100% 100%;
+
+}
+.login-log{
+  position: absolute;
+  margin-top: 300px;
+  left: 40%;  /* 还要再向左挪回宽度的一半 */
 }
 
 </style>
