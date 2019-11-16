@@ -5,21 +5,26 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import App from './App'
 import router from './router'
+import axios from 'axios'
 
 Vue.use(ElementUI, { size: 'small', zIndex: 3000 })
+Vue.prototype.$http = axios
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 
-router.beforeEach((to, from, next) => {
-	console.log(to.path);
-	console.log(from.path);
-	if(to.path == '/login'){
-		next();
-	}else{
-		next();
-	}
-});
+// router.beforeEach((to, from, next) => {
+// 	console.log(to.path);
+// 	console.log(from.path);
+// 	if(to.path == '/login'){
+// 		next();
+// 	}else if(to.path == '/register'){
+// 		console.log('register');
+//         next();
+// 	}else{
+// 		next();
+// 	}
+// });
 
 new Vue({
   el: '#app',
