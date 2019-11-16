@@ -14,6 +14,9 @@
          <el-form-item label="邮箱" prop="email">
            <el-input v-model="ruleForm.email" placeholder="邮箱"></el-input>
          </el-form-item>
+         <el-form-item label="手机号" prop="telephone">
+           <el-input v-model="ruleForm.telephone" placeholder="手机号"></el-input>
+         </el-form-item>
          <el-form-item>
            <el-button type="primary" @click="submitForm('ruleForm')">注册</el-button>
          </el-form-item>
@@ -23,6 +26,7 @@
 </template>
 
 <script>
+  import { Message } from 'element-ui';
   export default {
     data() {
       var validatePass = (rule, value, callback) => {
@@ -49,7 +53,8 @@
           name: '',
           pass: '',
           checkPass: '',
-          email: ''
+          email: '',
+          telephone: '',
         },
         rules: {
           name: [
@@ -65,6 +70,9 @@
           email: [
             { required: true, message: '请输入邮箱地址', trigger: 'blur' },
             { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+          ],
+          telephone: [
+            { required: true, message: '手机号', trigger: 'blur' }
           ]
         }
       };
@@ -82,13 +90,21 @@
       },
 
       register(){
-        this.$http.post("http://127.0.0.1:8081/register",
+        this.$http.post("http://127.0.0.1:8081/user/register",
           {
             name: this.ruleForm.name,
-            password: this.ruleForm.pass,
+            account: {
+              credentials: this.ruleForm.pass,
+              name: this.ruleForm.telephone
+            },
             email: this.ruleForm.email
           }).then(function (res) {
-            console.log(res.data);
+            console.log(res);
+            if(res.data.success){
+              Message.success(res.data.message)
+            }else{
+              Message.error(res.data.message);
+            }
         })
       }
     }
@@ -104,7 +120,7 @@
 
   .register-log{
     position: absolute;
-    margin-top: 300px;
+    margin-top: 200px;
     left: 40%;
   }
 </style>
