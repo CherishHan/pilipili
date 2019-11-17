@@ -19,6 +19,7 @@
          </el-form-item>
          <el-form-item>
            <el-button type="primary" @click="submitForm('ruleForm')">注册</el-button>
+           <router-link to = '/login'>已有账号，直接登录</router-link>
          </el-form-item>
        </el-form>
      </div>

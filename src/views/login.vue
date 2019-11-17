@@ -18,6 +18,7 @@
 </template>
 
 <script>
+  import { Message } from 'element-ui';
   export default {
     data() {
       return {
@@ -28,7 +29,7 @@
         rules: {
           name: [
             { required: true, message: '请填写账号', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+            { min: 1, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
           ],
           passwd: [
             { required: true, message: '请输入密码', trigger: 'blur' }
@@ -38,15 +39,24 @@
     },
     methods: {
       submitForm(formName) {
+        let _this = this;
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.$http.post('http://127.0.0.1:9090/user',
+            this.$http.post('http://127.0.0.1:8081/user/login',
             {
-              name: this.ruleForm.name,
+              username: this.ruleForm.name,
               password: this.ruleForm.passwd
             }
             ).then(function (res) {
-              console.log(res.data);
+              if(res.data.status === "success"){
+                Message.success(res.data.message);
+                console.log(res);
+                console.log(res.headers.authorization);
+                localStorage.setItem("token", res.headers.authorization);
+                _this.$router.push('/');
+              }else{
+                Message.error(res.data.message);
+              }
             })
           } else {
             console.log('error submit!!');
