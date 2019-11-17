@@ -18,7 +18,9 @@
               </el-menu-item>
             </el-menu>
         </el-header>
-        <el-main></el-main>
+        <el-main>
+          <el-button type="primary" @click="test">测试</el-button>
+        </el-main>
         <el-footer></el-footer>
       </el-container>
    </div>
@@ -43,6 +45,11 @@
         console.log("logout");
         this.isLogin = false;
         this.$store.commit("logout");
+      },
+      test(){
+        this.$http.get("http://127.0.0.1:8081/user/test").then(res => {
+          console.log(res);
+        })
       }
     },
 
