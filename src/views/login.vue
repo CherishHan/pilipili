@@ -53,6 +53,8 @@
                 console.log(res);
                 console.log(res.headers.authorization);
                 localStorage.setItem("token", res.headers.authorization);
+                _this.$store.commit('setIsLogin', true);
+                _this.$store.commit('setCurrentUser', _this.ruleForm.name);
                 _this.$router.push('/');
               }else{
                 Message.error(res.data.message);

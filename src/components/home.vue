@@ -11,7 +11,10 @@
               text-color="#fff"
               active-text-color="#ffd04b">
               <el-menu-item index="1" style="float:right">
-                 <router-link to="/login" >登录</router-link>
+                <router-link to="/" v-show="isLogin">{{currentUser}}</router-link>
+                <router-link to="/" v-show="isLogin" @click.native="logout">退出</router-link>
+                <router-link to="/login" v-show="!isLogin">登录</router-link>
+                <router-link to="/register" v-show="!isLogin">注册</router-link>
               </el-menu-item>
             </el-menu>
         </el-header>
@@ -22,17 +25,34 @@
 </template>
 
 <script>
+  import  '../../static/store'
   export default {
     data() {
       return {
         activeIndex: '1',
-        activeIndex2: '1'
+        activeIndex2: '1',
+        isLogin: false,
+        currentUser: ''
       };
     },
     methods: {
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
+      },
+      logout(){
+        console.log("logout");
+        this.isLogin = false;
+        this.$store.commit("logout");
       }
+    },
+
+    computed: {
+    },
+    created: function(){
+        console.log(this.$store.getters.getIsLogin);
+        console.log(this.$store.getters.getCurrentUser);
+        this.isLogin = this.$store.getters.getIsLogin;
+        this.currentUser = this.$store.getters.getCurrentUser;
     }
   }
 </script>

@@ -6,8 +6,10 @@ import 'element-ui/lib/theme-chalk/index.css';
 import App from './App'
 import router from './router'
 import axios from 'axios'
+import store from '../static/store';
 
 Vue.use(ElementUI, { size: 'small', zIndex: 3000 });
+
 Vue.prototype.$http = axios;
 Vue.config.productionTip = false;
 
@@ -29,5 +31,6 @@ Vue.config.productionTip = false;
 new Vue({
   el: '#app',
   router,
+  store: store,
   render: h => h(App)
 })
