@@ -11,10 +11,15 @@
               text-color="#fff"
               active-text-color="#ffd04b">
               <el-menu-item index="1" style="float:right">
+                <router-link to="/upload">投稿</router-link>
+              </el-menu-item>
+              <el-menu-item index="2" style="float:right">
+               <router-link to="/" v-show="isLogin" @click.native="logout">退出</router-link>
+               <router-link to="/register" v-show="!isLogin">注册</router-link>
+              </el-menu-item>
+              <el-menu-item index="3" style="float:right">
                 <router-link to="/" v-show="isLogin">{{currentUser}}</router-link>
-                <router-link to="/" v-show="isLogin" @click.native="logout">退出</router-link>
                 <router-link to="/login" v-show="!isLogin">登录</router-link>
-                <router-link to="/register" v-show="!isLogin">注册</router-link>
               </el-menu-item>
             </el-menu>
         </el-header>
@@ -47,7 +52,11 @@
         this.$store.commit("logout");
       },
       test(){
-        this.$http.get("http://127.0.0.1:8081/user/test").then(res => {
+        this.$http.get("http://127.0.0.1:8081/user/test", {
+          headers: {
+            token: localStorage.getItem("token")
+          }
+        }).then(res => {
           console.log(res);
         })
       }
