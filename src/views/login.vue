@@ -9,6 +9,37 @@
             <el-form-item  prop="passwd">
               <el-input type="password" v-model="ruleForm.passwd" placeholder="密码"></el-input>
             </el-form-item>
+            <el-form-item  prop="verify">
+              <!--<el-input type="text" name="imgCheckInfo" id="imgCheckInfo" placeholder="点击按钮进行验证">-->
+                <!--<el-button icon="el-icon-search" circle @click="refreshImg"></el-button>-->
+              <!--<el-button plain @click="refreshImg">朴素按钮</el-button>-->
+              <el-button type="text" @click="refreshImg">点击按钮进行验证</el-button>
+              <el-dialog
+                :visible.sync="dialogVisible"
+                width="30%">
+
+                <img id="showCheckImg" :src="imgSrc" alt="点互式验证"/>
+                <span slot="footer" class="dialog-footer">
+                  <!--<el-button @click="dialogVisible = false">取 消</el-button>-->
+                  <i class="el-icon-refresh" @click="refreshImg"></i>
+                  <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+                </span>
+              </el-dialog>
+              <!--</el-input>-->
+            </el-form-item>
+            <!--<div>-->
+              <!--&lt;!&ndash;每点击一次拼接记录对应坐标&ndash;&gt;-->
+              <!--&lt;!&ndash;<input name="imgCheckInfo" id="imgCheckInfo" type="text"></input>&ndash;&gt;-->
+              <!--&lt;!&ndash;生成img图像&ndash;&gt;-->
+              <!--<div class="img"  id="dv" >-->
+                <!--<img id="showCheckImg" :src="imgSrc" alt="点互式验证"/>-->
+                <!--&lt;!&ndash;生成刷新图标&ndash;&gt;-->
+                <!--<i id="freshIcon"  @click="refreshImg">刷新</i>-->
+              <!--</div>-->
+
+              <!--&lt;!&ndash;输出提示信息&ndash;&gt;-->
+              <!--<span class="pull-left" id="imgCheckText"></span>-->
+            <!--</div>-->
             <el-form-item>
               <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
               <el-button type="primary" @click="register">注册</el-button>
@@ -35,7 +66,10 @@
           passwd: [
             { required: true, message: '请输入密码', trigger: 'blur' }
           ]
-        }
+        },
+        checkClickNum: 0,
+        imgSrc: "",
+        dialogVisible: false
       };
     },
     methods: {
@@ -68,9 +102,27 @@
         })
       },
 
-    register(){
+      register(){
         this.$router.push({path:'/register'});
-      } 
+      },
+
+      refreshImg: function () {
+        this.checkClickNum = 0;
+        this.$http.get("http://127.0.0.1:8081/verify/getImg", {responseType: "arraybuffer"}).then((res) => {
+          // let blob = new Blob([res.data], {type: "image/png"});
+          // let url = URL.createObjectURL(blob);
+          // console.log(url);
+          // this.imgSrc = url;
+          return 'data:image/png;base64,' + btoa(
+            new Uint8Array(res.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
+          );
+        }).then(data => {
+          //图片地址 <img src='data' />
+          this.imgSrc = data;
+          console.log(data);
+          this.dialogVisible = true;
+        });
+      }
     }
   }
 </script>
@@ -108,5 +160,22 @@
   margin: 0 auto 40px 60px;
   color: #303133;
 }
+
+#dv{
+  position:relative;
+  width:100%;
+  height:100%;
+  margin:0px auto;
+}
+
+.el-icon-refresh{
+  position: relative;
+  margin-left: auto;
+}
+#imgCheckInfo{display:none}
+.img .marker{position:absolute;}
+#showCheckImg{width:100%;height:100%}
+#freshIcon{color:#3464ff;font-size: 1.5em}
+#imgCheckText{font-size:0.6em;color:#ff4546}
 
 </style>
