@@ -20,10 +20,6 @@ export default new Router({
     {
       path : '/register',
       component : () => import('../views/register.vue')
-    },
-    {
-      path: '/upload',
-      component: () => import('../views/upload.vue')
     }
   ]
 })
