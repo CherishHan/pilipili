@@ -18,10 +18,12 @@
                 :visible.sync="dialogVisible"
                 width="30%">
 
-                <img id="showCheckImg" :src="imgSrc" alt="点互式验证"/>
+                <div class="img" id="dv" @mousedown="getXY">
+                  <img id="showCheckImg" :src="imgSrc" alt="点互式验证"/>
+                </div>
                 <span slot="footer" class="dialog-footer">
                   <!--<el-button @click="dialogVisible = false">取 消</el-button>-->
-                  <i class="el-icon-refresh" @click="refreshImg"></i>
+                  <i class="el-icon-refresh" style="float: left; font-size: 25px" @click="refreshImg"></i>
                   <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
                 </span>
               </el-dialog>
@@ -122,6 +124,11 @@
           console.log(data);
           this.dialogVisible = true;
         });
+      },
+      getXY(e){
+        let x = e.offsetX;
+        let y = e.offsetY;
+        console.log("x = " + x + "; y = " + y);
       }
     }
   }
