@@ -7,16 +7,17 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 import store from '../static/store';
+import {apiConfig} from './config/apiConfig.js';
 
 import VideoPlayer from 'vue-video-player'
 import 'vue-video-player/src/custom-theme.css'
 import 'video.js/dist/video-js.css'
 
 Vue.use(VideoPlayer)
-
 Vue.use(ElementUI, { size: 'small', zIndex: 3000 });
 
 Vue.prototype.$http = axios;
+Vue.prototype.$apiConfig = apiConfig;
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */

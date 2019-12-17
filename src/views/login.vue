@@ -9,20 +9,19 @@
             <el-form-item  prop="passwd">
               <el-input type="password" v-model="ruleForm.passwd" placeholder="密码"></el-input>
             </el-form-item>
-            <el-form-item  prop="verify">
+            <el-form-item  prop="verify" class="verify">
               <!--<el-input type="text" name="imgCheckInfo" id="imgCheckInfo" placeholder="点击按钮进行验证">-->
                 <!--<el-button icon="el-icon-search" circle @click="refreshImg"></el-button>-->
               <!--<el-button plain @click="refreshImg">朴素按钮</el-button>-->
               <el-button type="text" @click="refreshImg">点击按钮进行验证</el-button>
               <el-dialog
                 :visible.sync="dialogVisible"
-                width="30%">
+                width="30%" :show-close="false">
 
-                <div class="img" id="dv" @mousedown="getXY">
-                  <img id="showCheckImg" :src="imgSrc" alt="点互式验证"/>
+                <div class="img" id="dv">
+                  <img id="showCheckImg" :src="imgSrc" @mousedown="createMarker" alt="点互式验证"/>
                 </div>
                 <span slot="footer" class="dialog-footer">
-                  <!--<el-button @click="dialogVisible = false">取 消</el-button>-->
                   <i class="el-icon-refresh" style="float: left; font-size: 25px" @click="refreshImg"></i>
                   <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
                 </span>
@@ -79,7 +78,7 @@
         let _this = this;
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.$http.post('http://127.0.0.1:8081/user/login',
+            this.$http.post(this.$apiConfig.loginUrl,
             {
               username: this.ruleForm.name,
               password: this.ruleForm.passwd
@@ -110,7 +109,7 @@
 
       refreshImg: function () {
         this.checkClickNum = 0;
-        this.$http.get("http://127.0.0.1:8081/verify/getImg", {responseType: "arraybuffer"}).then((res) => {
+        this.$http.get(this.$apiConfig.verify.getImgUrl, {responseType: "arraybuffer"}).then((res) => {
           // let blob = new Blob([res.data], {type: "image/png"});
           // let url = URL.createObjectURL(blob);
           // console.log(url);
@@ -125,10 +124,11 @@
           this.dialogVisible = true;
         });
       },
-      getXY(e){
+      createMarker(e){
         let x = e.offsetX;
         let y = e.offsetY;
         console.log("x = " + x + "; y = " + y);
+
       }
     }
   }
@@ -185,4 +185,17 @@
 #freshIcon{color:#3464ff;font-size: 1.5em}
 #imgCheckText{font-size:0.6em;color:#ff4546}
 
+</style>
+
+<style lang="scss">
+  .verify{
+    .el-dialog{
+      .el-dialog__header{
+        padding: 0;
+      }
+      .el-dialog__body{
+        padding: 0;
+      }
+    }
+  }
 </style>

@@ -91,7 +91,7 @@
       },
 
       register(){
-        this.$http.post("http://127.0.0.1:8081/user/register",
+        this.$http.post(this.$apiConfig.registerUrl,
           {
             name: this.ruleForm.name,
             account: {
