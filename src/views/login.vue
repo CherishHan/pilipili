@@ -18,8 +18,11 @@
                 :visible.sync="dialogVisible"
                 width="30%" :show-close="false">
 
-                <div class="img" id="dv">
-                  <img id="showCheckImg" :src="imgSrc" @mousedown="createMarker" alt="点互式验证"/>
+                <div class="img" id="dv" @mousedown="createMarker">
+                  <img id="showCheckImg" :src="imgSrc"  alt="点互式验证"/>
+                  <span @click="cancelClick" :style="{'position': 'absolute', 'background': '#f30303', 'border-radius': '50%', 'display': 'inline-block', 'height': '20px', 'width': '20px', 'left': left, 'top': top}">
+                    <span style="display: block;  color: #FFFFFF; height: 20px; line-height: 20px; text-align: center">{{checkClickNum}}</span>
+                  </span>
                 </div>
                 <span slot="footer" class="dialog-footer">
                   <i class="el-icon-refresh" style="float: left; font-size: 25px" @click="refreshImg"></i>
@@ -70,7 +73,11 @@
         },
         checkClickNum: 0,
         imgSrc: "",
-        dialogVisible: false
+        dialogVisible: false,
+        x: "",
+        y: "",
+        left: "",
+        top: ""
       };
     },
     methods: {
@@ -125,10 +132,15 @@
         });
       },
       createMarker(e){
-        let x = e.offsetX;
-        let y = e.offsetY;
-        console.log("x = " + x + "; y = " + y);
-
+         this.x = e.offsetX + "px";
+         this.y = e.offsetY + "px";
+         console.log("x = " + this.x + "; y = " + this.y);
+         this.left = this.x;
+         this.top = this.y;
+         this.checkClickNum++;
+      },
+      cancelClick(){
+        this.checkClickNum-=2;
       }
     }
   }
