@@ -15,7 +15,8 @@ function initApiConfig(){
      registerUrl : baseUrl + "/user/register",
 
     verify : {
-       getImgUrl : baseUrl + "/verify/getImg"
+       getImgUrl : baseUrl + "/verify/getImg",
+       checkImgUrl : baseUrl + "/verify/checkImg"
     }
   };
 }

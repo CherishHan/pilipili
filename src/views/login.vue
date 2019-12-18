@@ -18,15 +18,17 @@
                 :visible.sync="dialogVisible"
                 width="30%" :show-close="false">
 
-                <div class="img" id="dv" @mousedown="createMarker">
-                  <img id="showCheckImg" :src="imgSrc"  alt="点互式验证"/>
-                  <span @click="cancelClick" :style="{'position': 'absolute', 'background': '#f30303', 'border-radius': '50%', 'display': 'inline-block', 'height': '20px', 'width': '20px', 'left': left, 'top': top}">
-                    <span style="display: block;  color: #FFFFFF; height: 20px; line-height: 20px; text-align: center">{{checkClickNum}}</span>
-                  </span>
+                <div class="img" id="dv">
+                  <img id="showCheckImg" @mousedown="createMarker" :src="imgSrc"  alt="点互式验证"/>
+                  <div v-for="(item, i) in checkClickNum">
+                    <span @mousedown="cancelClick" :style="{'position': 'absolute', 'background': '#f30303', 'border-radius': '50%', 'display': 'inline-block', 'height': '20px', 'width': '20px', 'left': x[i], 'top': y[i]}">
+                      <span style="display: block;  color: #FFFFFF; height: 20px; line-height: 20px; text-align: center">{{i + 1}}</span>
+                    </span>
+                  </div>
                 </div>
                 <span slot="footer" class="dialog-footer">
                   <i class="el-icon-refresh" style="float: left; font-size: 25px" @click="refreshImg"></i>
-                  <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+                  <el-button type="primary" @click="check">确 定</el-button>
                 </span>
               </el-dialog>
               <!--</el-input>-->
@@ -74,10 +76,8 @@
         checkClickNum: 0,
         imgSrc: "",
         dialogVisible: false,
-        x: "",
-        y: "",
-        left: "",
-        top: ""
+        x: [],
+        y: []
       };
     },
     methods: {
@@ -116,6 +116,8 @@
 
       refreshImg: function () {
         this.checkClickNum = 0;
+        this.x = [];
+        this.y = [];
         this.$http.get(this.$apiConfig.verify.getImgUrl, {responseType: "arraybuffer"}).then((res) => {
           // let blob = new Blob([res.data], {type: "image/png"});
           // let url = URL.createObjectURL(blob);
@@ -132,15 +134,38 @@
         });
       },
       createMarker(e){
-         this.x = e.offsetX + "px";
-         this.y = e.offsetY + "px";
-         console.log("x = " + this.x + "; y = " + this.y);
-         this.left = this.x;
-         this.top = this.y;
+         let i = this.checkClickNum;
+         this.x[i] = e.offsetX - 10 + "px";
+         this.y[i] = e.offsetY - 10 + "px";
+         console.log("x = " + this.x[i] + "; y = " + this.y[i]);
          this.checkClickNum++;
       },
-      cancelClick(){
-        this.checkClickNum-=2;
+      cancelClick(e){
+         let num = e.srcElement.firstChild.data;
+         this.x = this.x.filter((item, i) => i < num - 1);
+         this.y = this.y.filter((item, i) => i < num - 1);
+         this.checkClickNum = num - 1;
+      },
+      check(){
+         let points = [];
+         for(var i = 0; i < this.x.length; i++){
+           var point = {};
+           point.x = this.x[i];
+           point.y = this.y[i];
+           points.push(point);
+         }
+         console.log(points);
+         console.log(JSON.stringify(points).toString())
+         this.dialogVisible = false;
+
+         // this.$http.post(this.$apiConfig.verify.checkImgUrl,
+         //
+         //   JSON.stringify(points).toString()
+         //   // ,
+         //   // {headers:{'Content-Type':'application/json'}}
+         //   ).then((res) => {
+         //     console.log("success");
+         // });
       }
     }
   }
